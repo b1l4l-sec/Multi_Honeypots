@@ -1,0 +1,36 @@
+{
+  "index_patterns": ["honeypot-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "index.mapping.total_fields.limit": 2000
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "timestamp": { "type": "date" },
+        "ip_address": { "type": "ip" },
+        "port": { "type": "integer" },
+        "honeypot_type": { "type": "keyword" },
+        "event_type": { "type": "keyword" },
+        "username": { "type": "keyword" },
+        "password": { "type": "keyword" },
+        "geoip": {
+          "properties": {
+            "location": { "type": "geo_point" },
+            "country_name": { "type": "keyword" },
+            "region_name": { "type": "keyword" },
+            "city_name": { "type": "keyword" },
+            "continent_code": { "type": "keyword" },
+            "country_code2": { "type": "keyword" }
+          }
+        },
+        "event_data": { "type": "object", "enabled": true }
+      }
+    }
+  },
+  "priority": 500,
+  "version": 2
+}
+

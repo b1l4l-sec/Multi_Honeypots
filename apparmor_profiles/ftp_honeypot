@@ -1,0 +1,54 @@
+#include <tunables/global>
+
+/usr/bin/python3 flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+
+  # Python interpreter
+  /usr/bin/python3 mr,
+  /usr/bin/python3.* mr,
+
+  # Python libraries
+  /usr/lib/python3*/** r,
+  /usr/local/lib/python3*/** r,
+
+  # Network access - FTP ports
+  network inet stream,
+  network inet6 stream,
+
+  # Allow binding to FTP honeypot port (2121)
+  capability net_bind_service,
+
+  # Project directory - read access for code
+  /tmp/cc-agent/59555146/project/honeypot_modules/ r,
+  /tmp/cc-agent/59555146/project/honeypot_modules/*.py r,
+
+  # FTP working directory
+  /tmp/ftp_honeypot/ rw,
+  /tmp/ftp_honeypot/** rw,
+
+  # Log directory - write access ONLY to FTP log
+  /var/log/multi_honeypot/ rw,
+  /var/log/multi_honeypot/ftp.log w,
+
+  # Deny access to sensitive locations
+  deny /etc/** w,
+  deny /home/** rw,
+  deny /root/** rw,
+  deny /boot/** rw,
+  deny /var/log/multi_honeypot/ssh.log w,
+  deny /var/log/multi_honeypot/http.log w,
+
+  # Temp and proc access
+  /tmp/** rw,
+  /proc/sys/kernel/random/uuid r,
+  /proc/*/stat r,
+  /proc/*/status r,
+  /sys/devices/system/cpu/online r,
+
+  # DNS resolution
+  /etc/hosts r,
+  /etc/nsswitch.conf r,
+  /etc/resolv.conf r,
+  /run/systemd/resolve/stub-resolv.conf r,
+}
